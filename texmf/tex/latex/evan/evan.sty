@@ -241,7 +241,7 @@
 \newcommand{\ii}{\item}
 
 % From Math 55 and Math 145 at Harvard
-\newenvironment{subproof}[1][Поддоказательство]{%
+\newenvironment{subproof}[1][Доказательство]{%
 \begin{proof}[#1] \renewcommand{\qedsymbol}{$\blacksquare$}}%
 {\end{proof}}
 
@@ -324,11 +324,11 @@
     \end{asydef}
   \else
     \begin{asydef}
-      texpreamble("\semainfont{CMU Serif}\setmathfont{NewComputernModernMath}");
+      texpreamble("\setmainfont{CMU Serif}\setmathfont{NewComputerModernMath}");
     \end{asydef}
   \fi
   \begin{asydef}
-    texpreamble(\setsansfont{CMU Sans Serif}\setmonofont{CMU Typewriter Text}");
+    texpreamble("\setsansfont{CMU Sans Serif}\setmonofont{CMU Typewriter Text}");
     settings.tex="lualatex";
     settings.outformat="pdf";
     // Replacement for olympiad+cse5 which is not standard
