@@ -95,6 +95,7 @@
 \newif\iftehbfont\tehbfontfalse
 
 %tehb fonts
+\DeclareOption{font}{\tehbfonttrue} %cm unicode font
 \DeclareOption{concrete}{\tehbconctrue\tehbfonttrue} %concrete math font
 
 \DeclareOption{sexy}{\evansecthmtrue\evanmdthmtrue\evancolorsectrue} % long docs
@@ -846,8 +847,8 @@
           \setmainfont{CMU Concrete}
           \setmathfont{Euler Math}
         \else
-          \semainfont{CMU Serif}
-          \setmathfont{NewComputernModernMath}         
+          \setmainfont{CMU Serif}
+          \setmathfont{NewComputerModernMath}         
         \fi
         \setsansfont{CMU Sans Serif}
         \setmonofont{CMU Typewriter Text}
