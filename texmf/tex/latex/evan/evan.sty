@@ -1,3 +1,5 @@
+% Modified version of evan.sty
+% Some evan.sty features will probably only work in XeLaTeX/LuaLaTeX
 % https://github.com/vEnhance/dotfiles/blob/main/texmf/tex/latex/evan/evan.sty %
 %                                                                              %
 %                                                       |  \                   %
@@ -87,9 +89,13 @@
 \newif\ifevanbritish\evanbritishtrue
 \newif\ifevanbib\evanbibfalse
 
-%Receive Arguments
-\DeclareOption{chinese}{\evanchinesetrue} % Chinese support
-% allow href to override this one
+
+%tehb args
+\newif\iftehbconc\tehbconcfalse
+\newif\iftehbfont\tehbfontfalse
+
+%tehb fonts
+\DeclareOption{concrete}{\tehbconctrue\tehbfonttrue} %concrete math font
 
 \DeclareOption{sexy}{\evansecthmtrue\evanmdthmtrue\evancolorsectrue} % long docs
 
@@ -166,6 +172,13 @@
   \par\nointerlineskip \vspace{\baselineskip}
 }
 \providecommand{\arc}[1]{\wideparen{#1}}
+\newcommand{\prototype}[1]{
+	\emph{{\color{red} Типичный пример:} #1} \par\medskip
+}
+\newenvironment{moral}{%
+	\begin{mdframed}[linecolor=green!70!black]%
+	\bfseries\color{green!50!black}}%
+	{\end{mdframed}}
 
 %For use in author command
 \newcommand{\plusemail}[1]{\\ \normalfont \texttt{\mailto{#1}}}
@@ -177,7 +190,7 @@
 \DeclareMathOperator*{\argmax}{arg max}
 
 %Convenient Environments
-\newenvironment{soln}{\begin{proof}[Solution]}{\end{proof}}
+\newenvironment{soln}{\begin{proof}[Решение]}{\end{proof}}
 \newenvironment{parlist}{\begin{inparaenum}[(i)]}{\end{inparaenum}}
 \newenvironment{gobble}{\setbox\z@\vbox\bgroup}{\egroup}
 
@@ -227,7 +240,7 @@
 \newcommand{\ii}{\item}
 
 % From Math 55 and Math 145 at Harvard
-\newenvironment{subproof}[1][Proof]{%
+\newenvironment{subproof}[1][Поддоказательство]{%
 \begin{proof}[#1] \renewcommand{\qedsymbol}{$\blacksquare$}}%
 {\end{proof}}
 
@@ -243,7 +256,7 @@
 \DeclareMathOperator{\Coker}{Coker} % Cokernel
 \DeclareMathOperator{\Ker}{Ker} % Kernel
 \DeclareMathOperator{\rank}{rank}
-\DeclareMathOperator{\Spec}{Spec} % spectrum
+\DeclareMathOperator{\Spec}{Spec} % spectr
 \DeclareMathOperator{\Tr}{Tr} % trace
 \DeclareMathOperator{\pr}{pr} % projection
 \DeclareMathOperator{\ext}{ext} % extension
@@ -296,12 +309,26 @@
   \else
     \usepackage{asymptote}
   \fi
+  \def\asydir{asymptote}
   \begin{asydef}
     defaultpen(fontsize(10pt));
     size(8cm); // set a reasonable default
     usepackage("amsmath");
     usepackage("amssymb");
-    settings.tex="pdflatex";
+    texpreamble("\usepackage[russian]{babel}\usepackage{fontspec, unicode-math}");
+  \end{asydef}
+  \iftehbconc
+    \begin{asydef}
+      texpreamble("\setmainfont{CMU Concrete}\setmathfont{Euler Math}");
+    \end{asydef}
+  \else
+    \begin{asydef}
+      texpreamble("\semainfont{CMU Serif}\setmathfont{NewComputernModernMath}");
+    \end{asydef}
+  \fi
+  \begin{asydef}
+    texpreamble(\setsansfont{CMU Sans Serif}\setmonofont{CMU Typewriter Text}");
+    settings.tex="lualatex";
     settings.outformat="pdf";
     // Replacement for olympiad+cse5 which is not standard
     import geometry;
@@ -319,6 +346,10 @@
     pair IP(path p, path q) { return intersectionpoints(p,q)[0]; }
     pair OP(path p, path q) { return intersectionpoints(p,q)[1]; }
     path Line(pair A, pair B, real a=0.6, real b=a) { return (a*(A-B)+A)--(b*(B-A)+B); }
+    line tangent(pair A, circle B, int C=0) { return tangents(B,A)[C];}
+    pair intersect(line p, line q) {return intersectionpoint(p,q);}
+    pair isoconj(pair P, pair A, pair B, pair C) {return isogonalconjugate(triangle(A, B, C), P);}
+    pair bisectorpoint(pair A, pair B, pair C) {return B+(dir(A-B)+dir(C-B))/2;}
     // cse5 more useful functions
     picture CC() {
       picture p=rotate(0)*currentpicture;
@@ -339,6 +370,17 @@
       draw(g, p, ar);
       return g;
     }
+    void whitelabel(Label L, pair z, align align=NoAlign, pen p=currentpen){
+            for(int n=0;n<16;++n){
+                label(shift(dir(360*n/16))*L,z,align,white);
+            }
+            label(L,z,align,p);
+         }
+
+    void whitedotlabel(Label L, pair z, align align=NoAlign, pen p=currentpen, filltype filltype=dotfilltype){
+            whitelabel(L,z,align,p);
+            dot(z,p,filltype);
+         }
   \end{asydef}
 \fi
 
@@ -350,11 +392,7 @@
   %%fakesection Set up author and date
   \ifevanauthor
     \title{} % empty title to avoid crashes
-    \ifluatex
-      \author{Evan Chen《陳誼廷》}
-    \else
-      \author{Evan Chen}
-    \fi
+    \author{Роговский Владимир}
     \date{\today}
   \fi
   %%fakesection Hyperref
@@ -384,7 +422,6 @@
     \fi
     \ifevanhref
       \usepackage[colorlinks=true,pdfusetitle]{hyperref}
-      \hypersetup{pdfkeywords={evan.sty},pdfsubject={web.evanchen.cc}}
       \hypersetup{urlcolor=RubineRed,linkcolor=RoyalBlue,citecolor=ForestGreen}
     \fi
     \usepackage[nameinlink]{cleveref}
@@ -448,6 +485,27 @@
       headpunct={\\[3pt]},
       postheadspace={0pt},
     ]{thmredbox}
+    
+     \mdfdefinestyle{mdtehbbox}{%
+      linewidth=0.5pt,
+      skipabove=12pt,
+      frametitleaboveskip=5pt,
+      frametitlebelowskip=0pt,
+      skipbelow=2pt,
+      frametitlefont=\bfseries,
+      innertopmargin=4pt,
+      innerbottommargin=8pt,
+      nobreak=true,
+      backgroundcolor=ForestGreen!5,
+      linecolor=ForestGreen,
+    }
+    \declaretheoremstyle[
+      headfont=\bfseries\sffamily\color{ForestGreen!70!black},
+      bodyfont=\normalfont,,
+      mdframed={style=mdtehbbox},
+      headpunct={\\[3pt]},
+      postheadspace={0pt},
+    ]{thmtehbbox}
 
     \mdfdefinestyle{mdgreenbox}{%
       skipabove=8pt,
@@ -466,7 +524,7 @@
       spaceabove=2pt,
       spacebelow=1pt,
       mdframed={style=mdgreenbox},
-      headpunct={ --- },
+      headpunct={\\},
     ]{thmgreenbox}
 
     \mdfdefinestyle{mdblackbox}{%
@@ -486,6 +544,8 @@
       spacebelow=0pt,
       mdframed={style=mdblackbox}
     ]{thmblackbox}
+    
+    
 
     \mdfdefinestyle{mdpurplebox}{%
       roundcorner=10pt,
@@ -515,63 +575,65 @@
     %Branching here: the option secthm changes theorems to be labelled by section
     \ifevanmdthm
       \ifevansecthm
-        \declaretheorem[style=thmbluebox,name=Theorem,numberwithin=section]{theorem}
+        \declaretheorem[style=thmbluebox,name=Теорема,numberwithin=section]{theorem}
       \else
-        \declaretheorem[style=thmbluebox,name=Theorem]{theorem}
+        \declaretheorem[style=thmbluebox,name=Теорема]{theorem}
       \fi
-      \declaretheorem[style=thmbluebox,name=Lemma,sibling=theorem]{lemma}
-      \declaretheorem[style=thmbluebox,name=Proposition,sibling=theorem]{proposition}
-      \declaretheorem[style=thmbluebox,name=Corollary,sibling=theorem]{corollary}
-      \declaretheorem[style=thmbluebox,name=Assumption,sibling=theorem]{assume}
-      \declaretheorem[style=thmbluebox,name=Theorem,numbered=no]{theorem*}
-      \declaretheorem[style=thmbluebox,name=Lemma,numbered=no]{lemma*}
-      \declaretheorem[style=thmbluebox,name=Proposition,numbered=no]{proposition*}
-      \declaretheorem[style=thmbluebox,name=Corollary,numbered=no]{corollary*}
-      \declaretheorem[style=thmbluebox,name=Assumption,numbered=no]{assume*}
+      \declaretheorem[style=thmbluebox,name=Лемма,sibling=theorem]{lemma}
+      \declaretheorem[style=thmbluebox,name=Предложение,sibling=theorem]{proposition}
+      \declaretheorem[style=thmbluebox,name=Следствие,sibling=theorem]{corollary}
+      \declaretheorem[style=thmbluebox,name=Предположение,sibling=theorem]{assume}
+      \declaretheorem[style=thmbluebox,name=Теорема,numbered=no]{theorem*}
+      \declaretheorem[style=thmbluebox,name=Лемма,numbered=no]{lemma*}
+      \declaretheorem[style=thmbluebox,name=Предложение,numbered=no]{proposition*}
+      \declaretheorem[style=thmbluebox,name=Следствие,numbered=no]{corollary*}
+      \declaretheorem[style=thmbluebox,name=Предположение,numbered=no]{assume*}
     \else
       \ifevansecthm
-        \declaretheorem[name=Theorem,numberwithin=section]{theorem}
+        \declaretheorem[name=Теорема,numberwithin=section]{theorem}
       \else
-        \declaretheorem[name=Theorem]{theorem}
+        \declaretheorem[name=Теорема]{theorem}
       \fi
-      \declaretheorem[name=Lemma,sibling=theorem]{lemma}
-      \declaretheorem[name=Proposition,sibling=theorem]{proposition}
-      \declaretheorem[name=Corollary,sibling=theorem]{corollary}
-      \declaretheorem[name=Assumption,sibling=theorem]{assume}
-      \declaretheorem[name=Theorem,numbered=no]{theorem*}
-      \declaretheorem[name=Lemma,numbered=no]{lemma*}
-      \declaretheorem[name=Proposition,numbered=no]{proposition*}
-      \declaretheorem[name=Corollary,numbered=no]{corollary*}
-      \declaretheorem[name=Assumption,numbered=no]{assume*}
+      \declaretheorem[name=Лемма,sibling=theorem]{lemma}
+      \declaretheorem[name=Предложение,sibling=theorem]{proposition}
+      \declaretheorem[name=Следствие,sibling=theorem]{corollary}
+      \declaretheorem[name=Предположение,sibling=theorem]{assume}
+      \declaretheorem[name=Теорема,numbered=no]{theorem*}
+      \declaretheorem[name=Лемма,numbered=no]{lemma*}
+      \declaretheorem[name=Предложение,numbered=no]{proposition*}
+      \declaretheorem[name=Следствие,numbered=no]{corollary*}
+      \declaretheorem[name=Предположение,numbered=no]{assume*}
     \fi
 
     \ifevanmdthm
-      \declaretheorem[style=thmgreenbox,name=Algorithm,sibling=theorem]{algorithm}
-      \declaretheorem[style=thmgreenbox,name=Algorithm,numbered=no]{algorithm*}
-      \declaretheorem[style=thmgreenbox,name=Claim,sibling=theorem]{claim}
-      \declaretheorem[style=thmgreenbox,name=Claim,numbered=no]{claim*}
+      \declaretheorem[style=thmgreenbox,name=Алгоритм,sibling=theorem]{algorithm}
+      \declaretheorem[style=thmgreenbox,name=Алгоритм,numbered=no]{algorithm*}
+      \declaretheorem[style=thmgreenbox,name=Утверждение,sibling=theorem]{claim}
+      \declaretheorem[style=thmgreenbox,name=Утверждение,numbered=no]{claim*}
     \else
-      \declaretheorem[name=Algorithm,sibling=theorem]{algorithm}
-      \declaretheorem[name=Algorithm,numbered=no]{algorithm*}
-      \declaretheorem[name=Claim,sibling=theorem]{claim}
-      \declaretheorem[name=Claim,numbered=no]{claim*}
+      \declaretheorem[name=Алгоритм,sibling=theorem]{algorithm}
+      \declaretheorem[name=Алгоритм,numbered=no]{algorithm*}
+      \declaretheorem[name=Подсказка,sibling=theorem]{hint}
+      \declaretheorem[name=Подсказка,numbered=no]{hint*}
+      \declaretheorem[name=Утверждение,sibling=theorem]{claim}
+      \declaretheorem[name=Утверждение,numbered=no]{claim*}
     \fi
 
     \ifevanmdthm
-      \declaretheorem[style=thmredbox,name=Example,sibling=theorem]{example}
-      \declaretheorem[style=thmredbox,name=Example,numbered=no]{example*}
+      \declaretheorem[style=thmredbox,name=Пример,sibling=theorem]{example}
+      \declaretheorem[style=thmredbox,name=Пример,numbered=no]{example*}
     \else
-      \declaretheorem[name=Example,sibling=theorem]{example}
-      \declaretheorem[name=Example,numbered=no]{example*}
+      \declaretheorem[name=Пример,sibling=theorem]{example}
+      \declaretheorem[name=Пример,numbered=no]{example*}
     \fi
 
     % Remark-style theorems
     \ifevanmdthm
-      \declaretheorem[style=thmblackbox,name=Remark,sibling=theorem]{remark}
-      \declaretheorem[style=thmblackbox,name=Remark,numbered=no]{remark*}
+      \declaretheorem[style=thmblackbox,name=Замечание,sibling=theorem]{remark}
+      \declaretheorem[style=thmblackbox,name=Замечание,numbered=no]{remark*}
     \else
-      \declaretheorem[name=Remark,sibling=theorem]{remark}
-      \declaretheorem[name=Remark,numbered=no]{remark*}
+      \declaretheorem[name=Замечание,sibling=theorem]{remark}
+      \declaretheorem[name=Замечание,numbered=no]{remark*}
     \fi
 
     \ifevanmdthm
@@ -585,30 +647,35 @@
       \declaretheoremstyle[spaceabove=6pt,spacebelow=6pt]{basehead}
     \fi
 
-    \declaretheorem[style=basehead,name=Answer,sibling=theorem]{answer}
-    \declaretheorem[style=basehead,name=Answer,numbered=no]{answer*}
-    \declaretheorem[style=basehead,name=Conjecture,sibling=theorem]{conjecture}
-    \declaretheorem[style=basehead,name=Conjecture,numbered=no]{conjecture*}
-    \declaretheorem[style=basehead,name=Definition,sibling=theorem]{definition}
-    \declaretheorem[style=basehead,name=Definition,numbered=no]{definition*}
-    \declaretheorem[style=basehead,name=Exercise,sibling=theorem]{exercise}
-    \declaretheorem[style=basehead,name=Exercise,numbered=no]{exercise*}
-    \declaretheorem[style=basehead,name=Fact,sibling=theorem]{fact}
-    \declaretheorem[style=basehead,name=Fact,numbered=no]{fact*}
-    \declaretheorem[style=basehead,name=Problem,sibling=theorem]{problem}
-    \declaretheorem[style=basehead,name=Problem,numbered=no]{problem*}
-    \declaretheorem[style=basehead,name=Question,sibling=theorem]{ques}
-    \declaretheorem[style=basehead,name=Question,numbered=no]{ques*}
+    \declaretheorem[style=basehead,name=Ответ,sibling=theorem]{answer}
+    \declaretheorem[style=basehead,name=Ответ,numbered=no]{answer*}
+    \declaretheorem[style=basehead,name=Гипотеза,sibling=theorem]{conjecture}
+    \declaretheorem[style=basehead,name=Гипотеза,numbered=no]{conjecture*}
+    \declaretheorem[style=basehead,name=Определение,sibling=theorem]{definition}
+    \declaretheorem[style=basehead,name=Определение,numbered=no]{definition*}
+    \declaretheorem[style=basehead,name=Упражнение,sibling=theorem]{exercise}
+    \declaretheorem[style=basehead,name=Упражнение,numbered=no]{exercise*}
+    \declaretheorem[style=basehead,name=Факт,sibling=theorem]{fact}
+    \declaretheorem[style=basehead,name=Факт,numbered=no]{fact*}
+    \declaretheorem[style=basehead,name=Задача,sibling=theorem]{problem}
+    \declaretheorem[style=basehead,name=Задача,numbered=no]{problem*}
+    \declaretheorem[style=basehead,name=Вопрос,sibling=theorem]{ques}
+    \declaretheorem[style=basehead,name=Вопрос,numbered=no]{ques*}
 
     \ifevanpkg
-      \Crefname{answer}{Answer}{Answers}
+      \Crefname{proposition}{Предложение}{Предложения}
+      \crefname{proposition}{предложение}{предложения}
+      \crefname{lemma}{лемма}{леммы}
+      \crefname{theorem}{теорема}{теоремы}
+      \Crefname{answer}{Ответ}{Ответы}
       \Crefname{assume}{Assumption}{Assumptions}
-      \Crefname{claim}{Claim}{Claims}
-      \Crefname{conjecture}{Conjecture}{Conjectures}
-      \Crefname{exercise}{Exercise}{Exercises}
-      \Crefname{fact}{Fact}{Facts}
-      \Crefname{problem}{Problem}{Problems}
-      \Crefname{ques}{Question}{Questions}
+      \Crefname{claim}{Утверждение}{Утверждения}
+      \Crefname{conjecture}{Гипотеза}{Гипотезы}
+      \Crefname{exercise}{Упражнение}{Упражнения}
+      \Crefname{fact}{Факт}{Факты}
+      \Crefname{problem}{Задача}{Задачи}
+      \Crefname{ques}{Вопрос}{Вопросы}
+      \Crefname{answer}{Ответ}{Ответы}
     \fi
   \fi
 
@@ -747,7 +814,7 @@
         \renewcommand{\headrulewidth}{0.5pt}
         \renewcommand{\footrulewidth}{0.0pt}
         \pagestyle{fancy}
-        \lhead{Evan Chen}
+        \lhead{Роговский Владимир}
         \chead{}
         \rhead{\nouppercase{\leftmark}}
         \lfoot{}
@@ -771,42 +838,19 @@
 
   %%fakesection Unicode
   \ifevanpkg
-    \ifluatex
-      \ifevanchinese
-        \usepackage{luatexja-fontspec}
-      \else
-        \usepackage{fontspec}
-      \fi
-      % https://tex.stackexchange.com/a/572220/76888
-      \directlua{luaotfload.add_fallback
-        ("evans_fallbacks",
-          {
-            "NotoColorEmoji:mode=harf;",
-            "Source Han Sans TW:style=Regular;",
-            "Noto Serif CJK SC:style=Regular;",
-          }
-        )}
-      \setmainfont{Latin Modern Roman}[
-        RawFeature={fallback=evans_fallbacks}
-      ]
-      \setsansfont{Latin Modern Sans}[
-        RawFeature={fallback=evans_fallbacks}
-      ]
-      \ifevanchinese
-        \setmainjfont{Source Han Sans TW}[RawFeature={fallback=evans_fallbacks}]
-        \setsansjfont{Source Han Sans TW}[RawFeature={fallback=evans_fallbacks}]
-      \fi
-    \else
-      \ifevanchinese
-        \usepackage{babel}
-        \usepackage[encapsulated]{CJK}
-        \usepackage{ucs}
-        \usepackage[utf8x]{inputenc}
-        \newenvironment{bsmi}{\begin{CJK}{UTF8}{bsmi}}{\end{CJK}}
-        \newcommand{\cn}[1]{\begin{bsmi}#1\end{bsmi}}
-        \AtBeginDocument{\begin{CJK}{UTF8}{bsmi}}
-        \AtEndDocument{\end{CJK}}
-      \fi
+    \ifluatex 
+      \usepackage[russian]{babel}
+      \usepackage{fontspec, unicode-math}
+      \iftehbfont
+        \iftehbconc
+          \setmainfont{CMU Concrete}
+          \setmathfont{Euler Math}
+        \else
+          \semainfont{CMU Serif}
+          \setmathfont{NewComputernModernMath}         
+        \fi
+        \setsansfont{CMU Sans Serif}
+        \setmonofont{CMU Typewriter Text}
     \fi
   \fi
 
