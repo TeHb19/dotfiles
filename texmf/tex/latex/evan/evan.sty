@@ -842,16 +842,23 @@
     \ifluatex 
       \usepackage[russian]{babel}
       \usepackage{fontspec, unicode-math}
+      \directlua{luaotfload.add_fallback
+        ("evans_fallbacks",
+          {
+            "NotoColorEmoji:mode=harf;",
+            "Noto Serif CJK SC:style=Regular;",
+          }
+        )}
       \iftehbfont
         \iftehbconc
-          \setmainfont{CMU Concrete}
+	  \setmainfont{CMU Concrete}[RawFeature={fallback=evans_fallbacks}]
           \setmathfont{Euler Math}
         \else
-          \setmainfont{CMU Serif}
+          \setmainfont{CMU Serif}[RawFeature={fallback=evans_fallbacks}]
           \setmathfont{NewComputerModernMath}         
         \fi
-        \setsansfont{CMU Sans Serif}
-        \setmonofont{CMU Typewriter Text}
+        \setsansfont{CMU Sans Serif}[RawFeature={fallback=evans_fallbacks}]
+        \setmonofont{CMU Typewriter Text}[RawFeature={fallback=evans_fallbacks}]
     \fi
   \fi
 
