@@ -1,0 +1,203 @@
+{
+	"layer": "top",
+	"output": ["eDP-1",],
+	"height": 20,
+
+	"modules-left":[
+		"cpu",
+		"memory", 
+		"temperature",
+		"hyprland/workspaces",
+		"hyprland/window"
+		],
+
+	"modules-center": ["clock", ],
+
+
+	"modules-right":  [
+		"custom/tonrate",
+		"custom/wya",
+		"hyprland/language",
+		"backlight",
+		"pulseaudio",
+		"pulseaudio#mic",
+		"bluetooth", 
+		"network",
+		"battery",
+		],
+
+    
+	"hyprland/workspaces": {
+		"format": " {icon} ",
+		"on-click": "activate",
+		"all-outputs": true,
+		"persistent_workspaces" :{
+			"eDP-1": [1,2,3,4,5],
+			"HDMI-A-1": [10],
+			"*": [6,7,8,9]
+    			},
+		"format-icons":{
+			}
+		},
+
+
+	"clock": {
+		"format":" {:%H:%M %a}",
+		"format-alt": "  {:%H:%M %Y.%m.%d %A}",
+		"tooltip-format": "{calendar}",
+		"timezones": ["Asia/Almaty"]	
+		},
+
+
+	"hyprland/language": {
+		"format": " {}",
+		"format-en": "US",
+		"format-ru": "RU",
+		},
+
+
+	"backlight": {
+		"tooltip": false,
+		"device": "amdgpu_bl2",
+		"on-scroll-up":   "brightnessctl set 5%+",
+        	"on-scroll-down": "brightnessctl set 5%-",
+		"scroll-step": 5,
+		"format": "{icon} {percent}",
+		"format-icons": ["󰃞","󰃟","󰃠",]
+		},
+
+
+	"network": {
+		"interface": "wlan0",
+		"format": "{ifname}",
+		"format-alt": " {icon} {essid} ",
+		"format-wifi": "{icon}",
+		"format-ethernet": "{ipaddr}/{cidr} ",
+		"format-disconnected": "Offile",
+		"tooltip-format-wifi": "Device:\t{ifname}\nSSID:\t{essid}\nFreq:\t{frequency}GHz\nIP: {ipaddr}\nSignal: {signalStrength}% ",
+		"on-click-right": "nm-connection-editor",
+		"format-icons":{
+			"wifi": " ",
+			},
+		},
+
+
+	"battery": {
+		"format": "{icon} {capacity}",
+		"format-icons": {
+	    		"default":  [ "󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹" ],
+	    		"plugged":  [ "󰚥" ],
+	    		"charging": [ "󱐋", ],
+	    		"warning": "󰂎",
+	    		"critical": "i",
+    			},
+
+		"states": {
+			"warning": 30,
+			"critical": 20,
+			},
+  
+		},
+
+
+	"pulseaudio": {
+		"on-click":       "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+		"on-scroll-down": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%-",
+		"on-scroll-up":	  "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+",
+		"scroll-step": 5,
+		"format":  "  {volume}",
+		"format-muted": "<span color='#957080'>  {volume}</span>",
+		"format-bluetooth": "{icon} {volume}",
+		"format-icons": {
+			"headphone": " ",
+			"headset": " ",
+			"default": ["", ""]
+    			},
+		"on-click-right": "exec pavucontrol",
+		"max-volume": 100,
+		},
+
+	"pulseaudio#mic": {
+		"format": "{format_source}",
+		"format-source": " {volume}",
+		"format-source-muted": "<span color='#957080'> {volume}</span>",
+		"on-click":       "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+		"on-scroll-down": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 5%-",
+		"on-scroll-up":   "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 5%+",
+		"tooltip": false,
+		"max-volume": 100,
+		},
+
+	"memory": {
+		"format": "<span foreground='#50a050'>󰍛</span> {}%",
+		"on-click": "alacritty -e htop"
+		},
+
+
+	"tray": {
+		"icon-size": 20,
+		"reverse-direction": true,
+		"spacing": 6
+		},
+
+
+	"cpu": {
+		"format": "<span foreground='#a05050'> </span> {usage}%",
+		"on-click": "alacrittty -e neofetch &"
+		},
+
+
+	"temperature": {
+		"critical-threshold": 75,
+		"format": "<span foreground='#5d73ca'></span> {temperatureC}°",
+		"tooltip": false,
+		},
+
+	"hyprland/window": {
+    		"separate-outputs": true
+		},
+
+
+	"custom/playerctl": {
+		"tooltip": false,
+		"format": " {icon} <span>{}</span> ",
+		"return-type": "json",
+		"exec": "playerctl -a metadata --format '{\"text\": \" {{markup_escape(title)}}\"}' -F",
+		"on-click": "playerctl play-pause",
+		"format-icons": {
+			"Playing": "<span foreground='#339933'></span>",
+			"Paused":  "<span foreground='#999933'></span>"
+			}
+		},
+
+
+	"bluetooth": {
+		//"on-click": "rfkill toggle bluetooth",
+		"on-click-right": "blueberry",
+		"format": "󰂯",
+		"format-off": "󰂲",
+		"tooltip-format": "{device_enumerate}",
+		"tooltip-format-enumerate-connected": "{device_alias}"
+		},
+
+	"custom/tonrate": {
+		"format": "TON {}",
+		"tooltip": true,
+		"exec": "~/.config/waybar/custom/ton_rate.py  --tokens ton --currencies usd ",
+		"interval": 600,
+		"return-type": "json",
+  		},
+
+	"custom/wya": {
+		"format": "{}",
+		"interval": 600,
+		"exec": "~/.config/waybar/custom/wya.py",
+		"tooltip": true,
+		"return-type": "json",
+		},
+
+
+
+
+}
+

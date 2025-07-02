@@ -849,15 +849,19 @@
             "Noto Serif CJK SC:style=Regular;",
           }
         )}
-      \iftehbfont
-        \iftehbconc
-	  \setmainfont{CMU Concrete}[RawFeature={fallback=evans_fallbacks}]
-          \setmathfont{Euler Math}
-        \else
-          \setmainfont{CMU Serif}[RawFeature={fallback=evans_fallbacks}]
-          \setmathfont{NewComputerModernMath}         
-        \fi
+      \iftehbfont 
+        
+        %%set default fonts
+	\setmainfont{CMU Serif}[RawFeature={fallback=evans_fallbacks}]
+        \setmathfont{NewComputerModernMath}
         \setsansfont{CMU Sans Serif}[RawFeature={fallback=evans_fallbacks}]
+        
+	\iftehbconc
+	  \setmainfont{CMU Concrete}[RawFeature={fallback=evans_fallbacks}]
+          \setsansfont{CMU Concrete}[RawFeature={fallback=evans_fallbacks}]
+          \setmathfont{Euler Math}
+	\fi
+
         \setmonofont{CMU Typewriter Text}[RawFeature={fallback=evans_fallbacks}]
     \fi
   \fi
