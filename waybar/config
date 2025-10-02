@@ -1,11 +1,10 @@
 {
 	"layer": "top",
-	"output": ["eDP-1",],
 	"height": 20,
 
 	"modules-left":[
 		"cpu",
-		"memory", 
+		"memory",
 		"temperature",
 		"hyprland/workspaces",
 		"hyprland/window"
@@ -21,12 +20,12 @@
 		"backlight",
 		"pulseaudio",
 		"pulseaudio#mic",
-		"bluetooth", 
+		"bluetooth",
 		"network",
 		"battery",
 		],
 
-    
+
 	"hyprland/workspaces": {
 		"format": " {icon} ",
 		"on-click": "activate",
@@ -45,7 +44,7 @@
 		"format":" {:%H:%M %a}",
 		"format-alt": "  {:%H:%M %Y.%m.%d %A}",
 		"tooltip-format": "{calendar}",
-		"timezones": ["Asia/Almaty"]	
+		"timezones": ["Europe/Paris"]
 		},
 
 
@@ -59,8 +58,8 @@
 	"backlight": {
 		"tooltip": false,
 		"device": "amdgpu_bl2",
-		"on-scroll-up":   "brightnessctl set 5%+",
-        	"on-scroll-down": "brightnessctl set 5%-",
+		"on-scroll-up":   "brightnessctl --device=`sh ~/dotfiles/scripts/get_gpu_name.sh` set 5%+",
+        	"on-scroll-down": "brightnessctl --device=`sh ~/dotfiles/scripts/get_gpu_name.sh` set 5%-",
 		"scroll-step": 5,
 		"format": "{icon} {percent}",
 		"format-icons": ["󰃞","󰃟","󰃠",]
@@ -96,7 +95,7 @@
 			"warning": 30,
 			"critical": 20,
 			},
-  
+
 		},
 
 

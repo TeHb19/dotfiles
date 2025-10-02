@@ -6,7 +6,7 @@
 }
 
 window#waybar {
- 
+
 }
 
 tooltip {
@@ -24,7 +24,7 @@ tooltip {
   margin-top: 8px;
   margin-right: 5px;
   background-color: rgba(25, 20, 40, 0.75);
-  border-radius: 18px;  
+  border-radius: 18px;
     }
 
 #workspaces button:hover {
@@ -35,13 +35,13 @@ tooltip {
   background-color: rgba(30, 25, 50, 0.9);
     }
 
-#language, 
-#clock, 
-#backlight, 
-#temperature, 
-#cpu, 
+#language,
+#clock,
+#backlight,
+#temperature,
+#cpu,
 #pulseaudio, #pulseaudio.mic,
-#network, #bluetooth,  #battery , #tray, #memory ,#custom-playerctl, 
+#network, #bluetooth,  #battery , #tray, #memory ,#custom-playerctl,
 #window,
 #custom-tonrate, #custom-wya {
   border: 1px solid rgba(70, 65, 99, 0.25);
@@ -54,7 +54,7 @@ tooltip {
 }
 
 #window,
-#custom-tonrate, 
+#custom-tonrate,
 #custom-wya {
   background-color: rgba(30, 25, 50, 0);
   border: none;
@@ -62,7 +62,7 @@ tooltip {
 
 #clock {
   border: none;
-  background-color: rgba(25, 20, 35, 0);
+  background-color: rgba(25, 20, 35, 0.9);
 }
 
 
@@ -77,7 +77,7 @@ tooltip {
 #pulseaudio{
   border-radius: 8px 0px 0px 8px;
   border-right: none;
-  margin-right: 0px; 
+  margin-right: 0px;
 }
 
 #pulseaudio.mic{
@@ -85,7 +85,7 @@ tooltip {
   border-left: none;
   margin-left: 0px;
   margin-right: 8px;
-  padding-left: 0px; 
+  padding-left: 0px;
 }
 
 #memory{

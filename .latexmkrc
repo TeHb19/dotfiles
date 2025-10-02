@@ -8,7 +8,7 @@ $pdf_mode = 4;
 
 $rc_report = 0;
 
-$pdf_previewer = 'start zathura'; 
+$pdf_previewer = 'start zathura';
 
 $do_cd = 1;
 

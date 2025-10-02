@@ -1,0 +1,8 @@
+#mailboxes ~/Mail/school/Inbox
+#mailboxes ~/Mail/personal/Inbox
+
+#folder-hook ~/Mail/personal/[a-zA-Z]* source ~/.config/mutt/muttrc.0
+folder-hook ~/Mail/school/[a-zA-Z]* source ~/.config/mutt/muttrc.1
+
+set mail_check = 60
+set mbox_type = Maildir

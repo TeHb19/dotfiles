@@ -93,6 +93,8 @@
 %tehb args
 \newif\iftehbconc\tehbconcfalse
 \newif\iftehbfont\tehbfontfalse
+\newif\iftehbru\tehbrufalse
+\DeclareOption{ru}{\tehbrutrue}
 
 %tehb fonts
 \DeclareOption{font}{\tehbfonttrue} %cm unicode font
@@ -172,7 +174,7 @@
   \par\hspace{\fill}\rule{0.95\linewidth}{.7pt}\hspace{\fill}
   \par\nointerlineskip \vspace{\baselineskip}
 }
-\providecommand{\arc}[1]{\wideparen{#1}}
+\newcommand{\arc}[1]{\wideparen{#1}}
 \newcommand{\prototype}[1]{
 	\emph{{\color{red} Типичный пример:} #1} \par\medskip
 }
@@ -393,7 +395,10 @@
   %%fakesection Set up author and date
   \ifevanauthor
     \title{} % empty title to avoid crashes
-    \author{Роговский Владимир}
+    \author{Vladimir Rogovskiy}
+    \iftehbru
+      \author{Роговский Владимир}
+    \fi
     \date{\today}
   \fi
   %%fakesection Hyperref
@@ -839,31 +844,31 @@
 
   %%fakesection Unicode
   \ifevanpkg
-    \ifluatex 
+    \ifluatex
       \usepackage[russian]{babel}
       \usepackage{fontspec, unicode-math}
       \directlua{luaotfload.add_fallback
         ("evans_fallbacks",
           {
+            "Hack Nerd Font:style=Mono;",
             "NotoColorEmoji:mode=harf;",
             "Noto Serif CJK SC:style=Regular;",
           }
         )}
-      \iftehbfont 
-        
-        %%set default fonts
-	\setmainfont{CMU Serif}[RawFeature={fallback=evans_fallbacks}]
-        \setmathfont{NewComputerModernMath}
-        \setsansfont{CMU Sans Serif}[RawFeature={fallback=evans_fallbacks}]
-        
-	\iftehbconc
-	  \setmainfont{CMU Concrete}[RawFeature={fallback=evans_fallbacks}]
+      \iftehbfont
+      %%set default fonts
+
+        \iftehbconc
+          \setmainfont{CMU Concrete}[RawFeature={fallback=evans_fallbacks}]
           \setsansfont{CMU Concrete}[RawFeature={fallback=evans_fallbacks}]
           \setmathfont{Euler Math}
-	\fi
-
-        \setmonofont{CMU Typewriter Text}[RawFeature={fallback=evans_fallbacks}]
-    \fi
+        \else
+          \setmainfont{CMU Serif}[RawFeature={fallback=evans_fallbacks}]
+          \setmathfont{NewComputerModernMath}
+          \setsansfont{CMU Sans Serif}[RawFeature={fallback=evans_fallbacks}]
+       \fi
+       \setmonofont{CMU Typewriter Text}[RawFeature={fallback=evans_fallbacks}]
+     \fi
   \fi
 
   %%fakesection Hints
