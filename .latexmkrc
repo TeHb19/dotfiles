@@ -13,5 +13,9 @@ $pdf_previewer = 'start zathura';
 $do_cd = 1;
 
 $aux_dir = "aux";
+$bibtex = 1;
 $silent = 1;
 $cleanup_includes_cusdep_generated = 1;
+@generated_exts = ( 'aux', 'bbl', 'bcf', 'fls', 'idx', 'ind', 'lof',
+                    'lot', 'out', 'pre', 'toc', 'nav', 'snm',
+                    'synctex.gz', 'pytxpyg', 'pytxmcr', 'pytxcode',);

@@ -3,9 +3,10 @@ import requests
 import json
 
 API_URL = "https://api.weather.yandex.ru/graphql/query"
-API_KEY = ""  # Замените на свой ключ
-LATITUDE =
-LONGITUDE =
+with open('/home/tehb/secrets/yandex_weather_api','r') as file:
+    API_KEY = file.read()[:-1] # Замените на свой ключ
+LATITUDE = 48.7125
+LONGITUDE = 2.21
 
 WEATHER_ICONS = {
     "CLEAR": "",  # ☀️

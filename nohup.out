@@ -1,0 +1,45 @@
+[2025-10-04 23:20:03.011] [info] Using configuration file /home/tehb/.config/waybar/config
+[2025-10-04 23:20:03.012] [info] Unable to receive desktop appearance: GDBus.Error:org.freedesktop.DBus.Error.UnknownMethod: No such interface “org.freedesktop.portal.Settings” on object at path /org/freedesktop/portal/desktop
+[2025-10-04 23:20:03.012] [info] Using CSS file /home/tehb/.config/waybar/style.css
+[2025-10-04 23:20:03.016] [info] Hyprland IPC starting
+[2025-10-04 23:20:03.016] [info] Loading persistent workspaces from Hyprland workspace rules
+[2025-10-04 23:20:03.016] [warning] 'swap-icon-label' must be a bool.
+[2025-10-04 23:20:03.142] [warning] Requested height: 20 is less than the minimum height: 47 required by the modules
+[2025-10-04 23:20:03.142] [info] Bar configured (width: 2880, height: 47) for output: eDP-1
+Traceback (most recent call last):
+  File "/usr/lib/python3.13/site-packages/requests/models.py", line 965, in json
+    return complexjson.loads(self.content.decode(encoding), **kwargs)
+           ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.13/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/tehb/.config/waybar/custom/wya.py", line 115, in <module>
+    weather = format_weather()
+  File "/home/tehb/.config/waybar/custom/wya.py", line 96, in format_weather
+    temperature, condition, wind_speed, wind_direction = get_weather_data()
+                                                         ~~~~~~~~~~~~~~~~^^
+  File "/home/tehb/.config/waybar/custom/wya.py", line 86, in get_weather_data
+    data = fetch_weather()["data"]["weatherByPoint"]["now"]
+           ~~~~~~~~~~~~~^^
+  File "/home/tehb/.config/waybar/custom/wya.py", line 83, in fetch_weather
+    return response.json()
+           ~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/site-packages/requests/models.py", line 973, in json
+    raise RequestsJSONDecodeError(e.msg, e.doc, e.pos)
+requests.exceptions.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+Updated device 'amdgpu_bl1':
+Device 'amdgpu_bl1' of class 'backlight':
+	Current brightness: 139650 (35%)
+	Max brightness: 399000
+
+Gdk-Message: 08:45:40.295: Error reading events from display: Broken pipe

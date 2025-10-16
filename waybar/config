@@ -10,7 +10,7 @@
 		"hyprland/window"
 		],
 
-	"modules-center": ["clock", ],
+	"modules-center": ["clock" ],
 
 
 	"modules-right":  [
@@ -22,7 +22,7 @@
 		"pulseaudio#mic",
 		"bluetooth",
 		"network",
-		"battery",
+		"battery"
 		],
 
 
@@ -51,7 +51,7 @@
 	"hyprland/language": {
 		"format": " {}",
 		"format-en": "US",
-		"format-ru": "RU",
+		"format-ru": "RU"
 		},
 
 
@@ -62,7 +62,7 @@
         	"on-scroll-down": "brightnessctl --device=`sh ~/dotfiles/scripts/get_gpu_name.sh` set 5%-",
 		"scroll-step": 5,
 		"format": "{icon} {percent}",
-		"format-icons": ["󰃞","󰃟","󰃠",]
+		"format-icons": ["󰃞","󰃟","󰃠"]
 		},
 
 
@@ -71,13 +71,14 @@
 		"format": "{ifname}",
 		"format-alt": " {icon} {essid} ",
 		"format-wifi": "{icon}",
-		"format-ethernet": "{ipaddr}/{cidr} ",
+  "format-ethernet": "{ipaddr}/{cidr} {icon}",
 		"format-disconnected": "Offile",
 		"tooltip-format-wifi": "Device:\t{ifname}\nSSID:\t{essid}\nFreq:\t{frequency}GHz\nIP: {ipaddr}\nSignal: {signalStrength}% ",
 		"on-click-right": "nm-connection-editor",
 		"format-icons":{
 			"wifi": " ",
-			},
+      "ethernet": "󰈁"
+			}
 		},
 
 
@@ -86,15 +87,15 @@
 		"format-icons": {
 	    		"default":  [ "󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹" ],
 	    		"plugged":  [ "󰚥" ],
-	    		"charging": [ "󱐋", ],
+	    		"charging": [ "󱐋"],
 	    		"warning": "󰂎",
-	    		"critical": "i",
+        "critical": "󰂃"
     			},
 
 		"states": {
 			"warning": 30,
-			"critical": 20,
-			},
+			"critical": 20
+			}
 
 		},
 
@@ -102,7 +103,7 @@
 	"pulseaudio": {
 		"on-click":       "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
 		"on-scroll-down": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%-",
-		"on-scroll-up":	  "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+",
+		"on-scroll-up":  "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+",
 		"scroll-step": 5,
 		"format":  "  {volume}",
 		"format-muted": "<span color='#957080'>  {volume}</span>",
@@ -113,7 +114,7 @@
 			"default": ["", ""]
     			},
 		"on-click-right": "exec pavucontrol",
-		"max-volume": 100,
+		"max-volume": 100
 		},
 
 	"pulseaudio#mic": {
@@ -124,7 +125,7 @@
 		"on-scroll-down": "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 5%-",
 		"on-scroll-up":   "wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SOURCE@ 5%+",
 		"tooltip": false,
-		"max-volume": 100,
+		"max-volume": 100
 		},
 
 	"memory": {
@@ -149,7 +150,7 @@
 	"temperature": {
 		"critical-threshold": 75,
 		"format": "<span foreground='#5d73ca'></span> {temperatureC}°",
-		"tooltip": false,
+		"tooltip": false
 		},
 
 	"hyprland/window": {
@@ -184,7 +185,7 @@
 		"tooltip": true,
 		"exec": "~/.config/waybar/custom/ton_rate.py  --tokens ton --currencies usd ",
 		"interval": 600,
-		"return-type": "json",
+		"return-type": "json"
   		},
 
 	"custom/wya": {
@@ -192,8 +193,8 @@
 		"interval": 600,
 		"exec": "~/.config/waybar/custom/wya.py",
 		"tooltip": true,
-		"return-type": "json",
-		},
+		"return-type": "json"
+		}
 
 
 

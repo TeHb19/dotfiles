@@ -1,0 +1,704 @@
+" Evan Chen's .vimrc
+
+" vint: -ProhibitSetNoCompatible
+set nocompatible
+scriptencoding 'utf-8'
+
+colorscheme reclipse
+filetype plugin indent on
+syntax on
+let mapleader='='
+let maplocalleader = ','
+
+" {{{ Plugins
+if !empty(globpath(&runtimepath, 'autoload/plug.vim'))
+  call plug#begin('~/.vim/plugged')
+  Plug 'alunny/pegjs-vim',             { 'for' : 'pegjs' }
+  Plug 'avakhov/vim-yaml',             { 'for' : 'yaml' }
+  Plug 'cespare/vim-toml',             { 'for' : 'toml' }
+  Plug 'chrisbra/csv.vim'
+  Plug 'chutzpah/icalendar.vim',       { 'for' : 'icalendar' }
+  Plug 'dag/vim-fish',                 { 'for' : 'fish' }
+  Plug 'farseer90718/vim-taskwarrior', { 'for' : 'taskedit' }
+  Plug 'hura/vim-asymptote',           { 'for' : 'asy' }
+  Plug 'kaarmu/typst.vim',             { 'for' : 'typst' }
+  Plug 'kchmck/vim-coffee-script',     { 'for' : 'coffee' }
+  Plug 'kovisoft/slimv',               { 'for' : 'lisp' }
+  Plug 'mboughaba/i3config.vim',       { 'for' : 'i3config' }
+  Plug 'mgedmin/python-imports.vim',   { 'for' : 'python' }
+  Plug 'neoclide/jsonc.vim',           { 'for' : 'json' }
+  Plug 'petRUShka/vim-sage',           { 'for' : 'sage' }
+  Plug 'plasticboy/vim-markdown',      { 'for' : 'markdown' }
+  Plug 'lervag/vimtex'
+  Plug 'vim-python/python-syntax',     { 'for' : 'python' }
+
+  Plug 'honza/vim-snippets'
+  Plug 'SirVer/ultisnips'
+
+  Plug 'Shougo/echodoc'
+  Plug 'airblade/vim-gitgutter'
+  Plug 'aymericbeaumet/vim-symlink'
+  Plug 'brglng/vim-im-select'
+  Plug 'ciaranm/detectindent'
+  Plug 'dense-analysis/ale'
+  Plug 'ludovicchabant/vim-gutentags'
+  Plug 'mg979/vim-visual-multi'
+  " there's a neovim version of this that might be neat
+  Plug 'svermeulen/vim-yoink'
+  Plug 'tpope/vim-fugitive'
+  Plug 'vim-airline/vim-airline'
+  Plug 'vim-airline/vim-airline-themes'
+  Plug 'vim-ctrlspace/vim-ctrlspace'
+  " ingo-library is a dependency for syntaxrange
+  Plug 'vim-scripts/ingo-library'
+  Plug 'vim-scripts/SyntaxRange'
+  Plug 'ypcrts/securemodelines'
+
+  Plug 'ryanoasis/vim-devicons'
+  Plug 'nathanaelkane/vim-indent-guides'
+  Plug 'preservim/nerdtree',          { 'on': 'NERDTreeToggle' }
+  Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': 'NERDTreeToggle' }
+endif
+" }}}
+
+" A million settings for addons {{{
+" https://github.com/junegunn/fzf.vim/issues/374
+let g:CtrlSpaceHeight = 5
+let g:CtrlSpaceSaveWorkspaceOnExit = 0
+let g:CtrlSpaceSetDefaultMapping = 0
+let g:CtrlSpaceStatuslineFunction ='airline#extensions#ctrlspace#statusline()'
+let g:CtrlSpaceUseTabline = 0
+let $FZF_DEFAULT_OPTS="--ansi --preview-window 'up:40%' --layout reverse --margin=1,4 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
+let g:completor_filetype_map = {}
+let g:csv_highlight_column = 'y'
+let g:csv_no_conceal = 1
+let g:csv_nomap_cr = 1
+let g:csv_nomap_e = 1
+let g:csv_nomap_h = 1
+let g:csv_nomap_j = 1
+let g:csv_nomap_k = 1
+let g:csv_nomap_l = 1
+let g:csv_nomap_w = 1
+let g:csv_start = 1
+let g:csv_end = 100
+let g:detectindent_preferred_expandtab = 1
+let g:detectindent_preferred_indent = 2
+let g:detectindent_preferred_when_mixed = 1
+let g:EasyMotion_keys = "aoeuidhtns;qjkxbmwvz',.pyfgcrl/"
+let g:echodoc_enable_at_startup=1
+if has('nvim')
+  let g:echodoc#type='floating'
+else
+  let g:echodoc#type='popup'
+endif
+let g:far#source='rg'
+let g:fzf_command_prefix = 'Fzf'
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
+let g:gitgutter_map_keys = 0
+let g:gutentags_cache_dir = '~/.vim/tags/'
+let g:gutentags_define_advanced_commands=1
+let g:gutentags_file_list_command = {
+  \ 'markers': {
+      \ '.git': 'sh ' . $HOME . '/dotfiles/sh-scripts/guten-targets-git.sh',
+      \ },
+  \ }
+let g:im_select_default = 'xkb:us:dvorak:eng'
+let g:indent_guides_auto_colors = 0
+let g:indent_guides_enable_on_vim_startup = 1
+let g:jedi#show_call_signatures = 0
+let g:plug_url_format = 'https://www.github.com/%s'
+let g:python_highlight_all = 1
+let g:taskwiki_disable_concealcursor=1
+let g:typst_conceal=1
+let g:typst_conceal_math=1
+let g:typst_conceal_emoji=1
+let g:UltiSnipsEditSplit='vertical'
+let g:UltiSnipsSnippetDirectories = [$HOME.'/.vim/snips/']
+let g:vim_markdown_auto_insert_bullets = 0
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_math = 1
+let g:vim_markdown_new_list_item_indent = 0
+let g:vimwiki_filetypes = ['markdown']
+let g:vimwiki_global_ext = 0
+let g:vimwiki_list = [{'path': '~/vimwiki/', 'syntax': 'markdown', 'ext': '.mkd'}]
+let g:VM_maps = {}
+let g:VM_maps['Find Under']         = '<C-v>'
+let g:VM_maps['Find Subword Under'] = '<C-v>'
+let g:yoinkIncludeDeleteOperations = 1
+let g:yoinkSyncSystemClipboardOnFocus = 0
+
+let g:vimtex_fold_enabled = 1
+let g:vimtex_fold_levelmarker = '§'
+let g:vimtex_fold_manual = 1
+let g:vimtex_fold_types = {
+      \ 'preamble' : {'enabled' : 1},
+      \ 'sections' : {'enabled' : 1},
+      \ 'envs' : { 'enabled' : 1},
+      \ }
+let g:vimtex_indent_on_ampersands = 0
+let g:vimtex_syntax_conceal = {
+      \ 'accents': 1,
+      \ 'ligatures': 1,
+      \ 'cites': 1,
+      \ 'fancy': 1,
+      \ 'spacing': 0,
+      \ 'greek': 1,
+      \ 'math_bounds': 0,
+      \ 'math_delimiters': 1,
+      \ 'math_fracs': 1,
+      \ 'math_super_sub': 1,
+      \ 'math_symbols': 1,
+      \ 'sections': 0,
+      \ 'styles': 1,
+      \}
+let g:vimtex_syntax_packages = {
+      \ 'amsmath': {'conceal': 1, 'load': 2},
+      \ 'babel': {'conceal': 1},
+      \ 'hyperref': {'conceal': 1},
+      \ 'fontawesome5': {'conceal': 1},
+      \}
+let g:vimtex_view_method = 'zathura'
+let g:vimtex_syntax_custom_envs = [
+      \ {
+      \   'name': 'tikzcd',
+      \   'math': 1
+      \ },
+      \ {
+      \   'name': 'asy',
+      \   'region': 'texCodeZone',
+      \   'nested': 'asy'
+      \ },
+      \ {
+      \   'name': 'asydef',
+      \   'region': 'texCodeZone',
+      \   'nested': 'asy'
+      \ },
+      \ {
+      \   'name': 'lstlisting',
+      \   'region': 'texCodeZone',
+      \   'nested': {
+      \     'bash': 'language=[Bb]ash',
+      \     'c': 'language=C',
+      \     'git': 'language=git',
+      \     'make': 'language=[Mm]ake',
+      \     'python': 'language=[Pp]ython',
+      \     'rust': 'language=[Rr]ust',
+      \     'sql': 'language=SQL',
+      \   },
+      \ }
+      \]
+
+
+let grepprg = 'ag --nogroup --nocolor'
+
+let g:airline#extensions#coc#enabled = 1
+let g:airline#extensions#ctrlspace#enabled = 1
+let g:airline#extensions#fugitive#enabled = 1
+let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#ctrlspace_show_tab_nr = 0
+let g:airline#extensions#tabline#current_first = 0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 1
+let g:airline#extensions#tabline#show_splits = 1
+let g:airline#extensions#tabline#show_tab_count = 2
+let g:airline#extensions#tabline#show_tab_nr = 1
+let g:airline#extensions#tabline#show_tab_type = 1
+let g:airline#extensions#tabline#show_tabs = 1
+let g:airline#extensions#vimtex#left = '▶'
+let g:airline#extensions#vimtex#right = ''
+let g:airline_powerline_fonts = 1
+let g:airline_theme='wombat'
+function! AirlineSetup()
+  let g:airline_section_a = airline#section#create_left(['mode', 'readonly',])
+  let g:airline_section_b = airline#section#create_left(['branch', 'hunks'])
+  let g:airline_section_c = airline#section#create_left(['file', ])
+  let g:airline_section_gutter = airline#section#create(['%<', 'tagbar', '%='])
+  let g:airline_section_x = airline#section#create_right(['crypt', 'paste', 'iminsert', ' %v'])
+  let g:airline_section_y = airline#section#create(['maxlinenr', ])
+  let g:airline_section_z = airline#section#create(['filetype'])
+  let g:airline_mode_map = {
+      \ '__'     : '-',
+      \ 'c'      : 'C',
+      \ 'i'      : 'I',
+      \ 'ic'     : 'I',
+      \ 'ix'     : 'I',
+      \ 'n'      : 'N',
+      \ 'multi'  : 'M',
+      \ 'ni'     : 'N',
+      \ 'no'     : 'N',
+      \ 'R'      : 'R',
+      \ 'Rv'     : 'R',
+      \ 's'      : 'S',
+      \ 'S'      : 'S',
+      \ ''     : 'S',
+      \ 't'      : 'T',
+      \ 'v'      : 'V',
+      \ 'V'      : 'V',
+      \ ''     : 'V',
+      \ }
+  let s:IA = [ 'gray15', 'gray80', 35, 234 ]
+  let g:airline#themes#wombat#palette.inactive = airline#themes#generate_color_map(s:IA, s:IA, s:IA)
+  let g:airline#extensions#whitespace#checks = ['indent', 'trailing', 'mixed-indent-file', 'conflicts']
+endfunction
+
+" ALE + CoC
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_format = '[%severity%] [%linter%] %s'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_fixers = { '*' : ['remove_trailing_lines', 'trim_whitespace' ] } " by default
+let g:ale_fix_on_save = 1
+let g:ale_keep_list_window_open = 0
+let g:ale_open_list = 0
+let g:ale_languagetool_options = '--disable COMMA_PARENTHESIS_WHITESPACE,WHITESPACE_RULE,UPPERCASE_SENTENCE_START,LC_AFTER_PERIOD,FILE_EXTENSIONS_CASE,ARROWS,EN_UNPAIRED_BRACKETS,UNLIKELY_OPENING_PUNCTUATION,UNIT_SPACE,ENGLISH_WORD_REPEAT_BEGINNING_RULE,CURRENCY,REP_PASSIVE_VOICE,EN_UNPAIRED_QUOTES'
+let g:ale_python_mypy_enabled = 0
+let g:ale_python_mypy_options = '--ignore-missing-imports --enable-recursive-aliases'
+let g:ale_set_balloon= 1
+let g:ale_set_loclist = 1
+let g:ale_set_quickfix = 1
+let g:ale_sign_column_always = 1
+let g:ale_sign_info = '🛈'
+let g:ale_sign_error = '⛔'
+let g:ale_sign_warning = '⚠️'
+" let g:ale_use_neovim_diagnostics_api = 1
+let g:ale_virtualtext_cursor = 2
+let g:ale_virtualtext_prefix = '☢️ '
+let g:coc_start_at_startup = 0
+let g:coc_global_extensions = [
+  \ 'coc-css',
+  \ 'coc-html',
+  \ 'coc-htmldjango',
+  \ 'coc-jedi',
+  \ 'coc-json',
+  \ 'coc-lua',
+  \ 'coc-pyright',
+  \ 'coc-rust-analyzer',
+  \ 'coc-sh',
+  \ 'coc-tsserver',
+  \ 'coc-vimlsp',
+  \ 'coc-vimtex',
+  \ 'coc-yaml',
+  \ ]
+if !empty(globpath(&runtimepath, 'autoload/plug.vim'))
+  call plug#end()
+endif
+" }}}
+" ALE + CoC continued {{{
+"if !empty(globpath(&runtimepath, 'autoload/plug.vim'))
+"  call ale#Set('djlint_executable', 'djlint')
+"  call ale#Set('djlint_options', '')
+"
+"  function! ALEFixDjlint(buffer) abort
+"      let l:executable = ale#Var(a:buffer, 'djlint_executable')
+"      let l:options = ale#Var(a:buffer, 'djlint_options')
+"
+"      return {
+"      \   'command': ale#Escape(l:executable)
+"      \       . ' --reformat'
+"      \       . (empty(l:options) ? '': ' ' . l:options)
+"      \       . ' -',
+"      \}
+"  endfunction
+"  execute ale#fix#registry#Add('djlint', 'ALEFixDjlint', ['htmljdjango'], 'Fixer for Django templates')
+"endif
+"
+"
+"function! ALEFix_DeathToDoubleDollarSigns(buffer, lines) abort
+"  let l:index = 0
+"  let l:lines_new = range(len(a:lines))
+"  for l:line in a:lines
+"    let l:lines_new[l:index] = substitute(l:line,  '\$\$\_s*\(.\{-}\)\_s*\$\$', '\\[ \1 \\]', 'g')
+"    let l:index = l:index + 1
+"  endfor
+"  return l:lines_new
+"endfunction
+"
+"function! CocStartAndDisableALELSP()
+"  CocStart
+"  CocEnable
+"  let g:ale_disable_lsp = 1
+"  echo 'CoC has been started!'
+"endfunction
+" }}}
+
+" Arrow key shortcuts {{{
+function! DelEmptyLineAbove()
+  if line('.') == 1
+    return
+  endif
+  let l:line = getline(line('.') - 1)
+  if l:line =~# '^\s*$'
+    let l:colsave = col('.')
+    .-1d
+    "silent normal!
+    call cursor(line('.'), l:colsave)
+  endif
+endfunction
+function! AddEmptyLineAbove()
+  let l:scrolloffsave = &scrolloff
+  " Avoid jerky scrolling with ^E at top of window
+  set scrolloff=0
+  call append(line('.') - 1, '')
+  let &scrolloff = l:scrolloffsave
+  endfunction
+  function! DelEmptyLineBelow()
+  if line('.') == line('$')
+    return
+  endif
+  let l:line = getline(line('.') + 1)
+  if l:line =~# '^\s*$'
+    let l:colsave = col('.')
+    .+1d
+    ''
+    call cursor(line('.'), l:colsave)
+  endif
+endfunction
+function! AddEmptyLineBelow()
+  call append(line('.'), '')
+endfunction
+nnoremap <Left> <<
+nnoremap <Right> >>
+nnoremap <Up> :call DelEmptyLineAbove()<CR>
+nnoremap <Down> :call AddEmptyLineAbove()<CR>
+nnoremap <silent> [g :ALEPreviousWrap<CR>
+nnoremap <silent> ]g :ALENextWrap<CR>
+" }}}
+" Misc mappings {{{
+" jumplist shouldn't move across files
+function! JumpWithinFile(back, forw)
+  let [n, i] = [bufnr('%'), 1]
+  let p = [n] + getpos('.')[1:]
+  sil! exe 'norm!1' . a:forw
+  while 1
+    let p1 = [bufnr('%')] + getpos('.')[1:]
+    if n == p1[0] | break | endif
+    if p == p1
+      sil! exe 'norm!' . (i-1) . a:back
+      break
+    endif
+    let [p, i] = [p1, i+1]
+    sil! exe 'norm!1' . a:forw
+  endwhile
+endfunction
+nnoremap <silent> <C-i> :call JumpWithinFile("\<c-o>", "\<c-i>")<cr>
+nnoremap <silent> <C-o> :call JumpWithinFile("\<c-i>", "\<c-o>")<cr>
+
+" Snippet and marker jumping
+function MarkSnipJump(insertmode)
+  if UltiSnips#CanJumpForwards()
+    call UltiSnips#JumpForwards()
+  else
+    let l:lineno = search('<+[a-zA-Z]*+>')
+    if l:lineno > 0
+      call feedkeys('cf>', 'in')
+    else
+      echo 'Nothing to jump to'
+      if a:insertmode
+        call feedkeys('a', 'in')
+      endif
+    endif
+  endif
+endfunction
+nnoremap <silent> <C-j> :call MarkSnipJump(0)<cr>
+inoremap <silent> <C-j> <Esc>:call MarkSnipJump(1)<cr>
+
+" Navigate buffers with backspace
+nnoremap <Backspace> :CtrlSpaceGoUp<CR>
+nnoremap <S-Backspace> :CtrlSpaceGoDown<CR>
+" Disable ex mode entirely
+nmap Q <nop>
+" Save command
+nnoremap <expr> <CR> &modifiable ? ":wall<CR>" : "<CR>"
+" alias :bdelete to :bc (for buffer-close)
+cnoreabbrev bc bdelete
+
+" Also replace the default gp with yoink paste so we can toggle paste in this case too
+nnoremap gp <plug>(YoinkPaste_gp)
+nnoremap gP <plug>(YoinkPaste_gP)
+
+" CoC
+nnoremap <silent> cv <Plug>(coc-rename)
+nnoremap <silent> gd <Plug>(coc-definition)
+nnoremap <silent> gy <Plug>(coc-type-definition)
+nnoremap <silent> gl <Plug>(coc-implementation)
+nnoremap <silent> gr <Plug>(coc-references)
+
+function! ShowDocumentation()
+  if !get(g:, 'coc_service_initialized', 0)
+    call feedkeys('K', 'in')
+  elseif CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+nnoremap <silent> K :call ShowDocumentation()<CR>
+" }}}
+
+" MINUS KEYBINDINGS (window manager) {{{
+" CTRL-W is too annoying to type, repurpose minus
+" ------------------------------------------
+nnoremap -h <C-w>h
+nnoremap -l <C-w>l
+nnoremap -j <C-w>j
+nnoremap -k <C-w>k
+" split (match nerdtree)
+nnoremap -i :split<CR>
+" n for new; easier to reach than -v
+nnoremap -s :vsplit<CR>
+" maximize window
+nnoremap -a <C-w>o
+
+" make notes
+" https://www.gilesorr.com/blog/vim-tips-23-scratch-buffer.html
+function NewScratch()
+  split scratch-buffer.md
+  setlocal buftype=nofile
+  setlocal bufhidden=hide
+  setlocal noswapfile
+endfunction
+nnoremap <silent> -z :call NewScratch()<CR>
+" }}}
+" SPACE BAR KEYBINDINGS {{{
+" Not setting leader key because otherwise extensions mess with me
+" Jump to definition in tags
+function TagJump()
+  let word = expand('<cword>')
+  vsplit
+  try
+    exec('tjump ' . l:word)
+  catch
+    echo l:word . ' not found'
+    close
+  endtry
+endfunction
+" e is for emulator
+function TreeToggle()
+  if has('nvim')
+    Neotree toggle
+  else
+    NERDTreeToggle
+  endif
+endfunction
+
+nnoremap <Space>a :ALEDetail<CR>
+nnoremap <Space>c :call CocStartAndDisableALELSP()<CR>
+nnoremap <Space>d :call TagJump()<CR>
+nnoremap <Space>e :call TreeToggle()<CR>
+nnoremap <Space>k :set spelllang=en,ru<CR>
+nnoremap <Space>l :lcd %:p:h<CR>
+nnoremap <Space>n :set nowrap<CR>
+nnoremap <Space>p :CtrlSpace<CR>
+nnoremap <Space>qq :qa<CR>
+nnoremap <Space>r :call UltiSnips#RefreshSnippets()<CR>
+nnoremap <Space>t :let $VIM_DIR=expand('%:p:h')<CR>:silent !xfce4-terminal --working-directory="$VIM_DIR" &<CR>:redraw!<CR>
+nnoremap <Space>uw :set wrap!<CR>
+if has('nvim')
+  nnoremap <Space>y :Inspect<CR>
+else
+  nnoremap <Space>y :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+  \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+  \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+endif
+
+" git status
+nnoremap <Space>gg :Git<CR>
+nnoremap <Space>gb :Git blame -w<CR>
+nnoremap <Space>gd :Gdiffsplit<CR>
+nnoremap <Space>g<CR> :Gwrite<CR>
+" git commit
+nnoremap <Space>gc :Git commit<CR>
+" git commit (current file)
+nnoremap <Space>gw :Git commit %<CR>
+" git commit all
+nnoremap <Space>ga :Git commit --all<CR>
+" git create commit --amend [edit commit]
+nnoremap <Space>gC :Git commit --amend<CR>
+" git commit --amend current file [edit write]
+nnoremap <Space>gW :Git commit % --amend<CR>
+" git commit --amend all [edit all]
+nnoremap <Space>gA :Git commit --all --amend<CR>
+" git undo (really git read)
+nnoremap <Space>gu :Gread<CR>
+
+" Smart window close replacement for :q
+function! EvanClose()
+  if (winnr('$') == 1 || (winnr('$') == 2 && winnr() == 2 && (bufname('NvimTree') !=# '' || bufname('NERD_Tree') !=# '')))
+    if tabpagenr('$') == 1
+      bdelete
+      if expand('%:p') ==# ''
+        quit
+      endif
+    else
+      bdelete
+    endif
+  elseif expand('%:l') ==# '__doc__'
+    bdelete
+  else
+    close
+  endif
+endfunction
+nnoremap <Space>- :call EvanClose()<CR>
+
+" Buffer switching: https://vi.stackexchange.com/a/9255
+function! EvanSwitchBufNum(num)
+  let l:buffers = filter(range(1, bufnr('$')), 'buflisted(v:val)')
+  let l:input = a:num . ''
+  while 1
+    let l:cnt = 0
+    let l:i = 0
+
+    " count matches
+    while l:i<len(l:buffers)
+      let l:bn = l:buffers[l:i] . ''
+      if l:input==l:bn[0:len(l:input)-1]
+        let l:example = l:bn
+        let l:cnt+=1
+      endif
+      let l:i+=1
+    endwhile
+
+    " no matches
+    if l:cnt==0 && len(l:input)>0
+      echo 'no buffer [' . l:input . ']'
+      return ''
+    elseif l:cnt==1 && l:input==l:example
+      return ':b ' . l:example . "\<CR>"
+    endif
+
+    echo ':b ' . l:input
+    let l:n = getchar()
+    if l:n==char2nr("\<BS>") ||  l:n==char2nr("\<C-h>")
+      " delete one word
+      if len(l:input)>=2
+        let l:input = l:input[0:len(l:input)-2]
+      else
+        let l:input = ''
+      endif
+    elseif l:n==char2nr("\<CR>") || (l:n<char2nr('0') || l:n>char2nr('9'))
+      return ':b ' . l:input . "\<CR>"
+    else
+      let l:input = l:input . nr2char(l:n)
+    endif
+    let g:n = l:n
+    endwhile
+endfunc
+
+nnoremap <expr> <Space>1 EvanSwitchBufNum(1)
+nnoremap <expr> <Space>2 EvanSwitchBufNum(2)
+nnoremap <expr> <Space>3 EvanSwitchBufNum(3)
+nnoremap <expr> <Space>4 EvanSwitchBufNum(4)
+nnoremap <expr> <Space>5 EvanSwitchBufNum(5)
+nnoremap <expr> <Space>6 EvanSwitchBufNum(6)
+nnoremap <expr> <Space>7 EvanSwitchBufNum(7)
+nnoremap <expr> <Space>8 EvanSwitchBufNum(8)
+nnoremap <expr> <Space>9 EvanSwitchBufNum(9)
+" }}}
+
+" Settings {{{
+set backupdir=~/.vim/tmp
+set directory=~/.vim/tmp
+
+set backspace=indent,eol,start
+set backup     " keep a backup file
+set breakindent
+set colorcolumn=+1
+if exists('+cryptmethod')
+  set cryptmethod=blowfish2
+endif
+set completeopt=menuone,noselect,preview
+set conceallevel=2
+set cursorline
+if exists('+cursorlineopt')
+  set cursorlineopt=number
+endif
+set expandtab
+set formatoptions-=t
+set foldlevelstart=3
+set guicursor+=n-v-c:blinkon0
+set hidden
+set history=50 " keep 50 lines of command line history
+set hlsearch
+set ignorecase
+set incsearch  " do incremental searching
+set laststatus=2
+set linebreak
+set list
+set listchars=tab:\|\ ,trail:_
+set mouse=a    " mouse enabled
+set noautoindent
+set nohlsearch
+set showmode " don't need mode shown if we have airline
+set nowrap
+set number
+set numberwidth=3
+set omnifunc=ale#completion#OmniFunc
+set ruler      " show the cursor position all the time
+set runtimepath+=/usr/local/lilypond/usr/share/lilypond/current/vim/
+set scrolloff=5
+set shell=/bin/zsh
+set shellslash
+set shiftwidth=2
+set shortmess=aItT
+set showbreak=_
+set showcmd    " display incomplete commands
+set smartcase
+set spell
+set spelllang=en,ru
+set splitright
+set t_Co=256 " number of colors
+set tabstop=2
+set textwidth=80 " default textwidth = 80
+set updatetime=100
+set wrapmargin=0
+if exists('+winbar')
+  set winbar=%n:\ %f%m%h%w%q
+endif
+" }}}
+" {{{ Auto commands
+function! DetectIndentIfPlugged()
+  if !empty(globpath(&runtimepath, 'autoload/plug.vim'))
+    DetectIndent
+  endif
+endfunction
+" ------------------------------------------
+augroup vimrc
+  autocmd!
+augroup END
+autocmd vimrc BufNewFile,BufRead *.asy setfiletype asy
+autocmd vimrc BufNewFile,BufRead *.lean setfiletype lean
+autocmd vimrc BufNewFile,BufRead *.ly setfiletype lilypond
+autocmd vimrc BufNewFile,BufRead *.less setfiletype css
+autocmd vimrc BufNewFile,BufRead *.ics setfiletype icalendar
+autocmd vimrc BufNewFile,BufRead *.pegjs setfiletype pegjs
+autocmd vimrc BufNewFile,BufRead *.otl setfiletype votl
+autocmd vimrc BufNewFile,BufRead *.slither setfiletype slither
+autocmd vimrc BufNewFile,BufRead *.tex syntax spell toplevel
+autocmd vimrc BufNewFile,BufRead *.tsq setfiletype tsq
+autocmd vimrc BufNewFile,BufRead *.tsqx setfiletype tsqx
+autocmd vimrc BufNewFile,BufRead *.tsv setlocal noexpandtab copyindent preserveindent softtabstop=0 shiftwidth=4 tabstop=4
+autocmd vimrc BufNewFile,BufRead *.typ setfiletype typst
+autocmd vimrc User AirlineAfterTheme call AirlineSetup()
+autocmd vimrc BufRead * call DetectIndentIfPlugged()
+autocmd vimrc BufNewFile,BufRead *.tex set spell
+autocmd vimrc VimEnter .git/COMMIT_EDITMSG set filetype=gitcommit
+
+function! DetectVonTemp()
+  if stridx(expand('%:p'), '/vondb') != -1
+    let b:vimtex_main='/tmp/preview_' . $USER . '/von_preview.tex'
+  endif
+endfunction
+autocmd vimrc BufReadPre *.tex call DetectVonTemp()
+
+if has('nvim')
+  augroup highlight_yank
+    autocmd!
+    autocmd TextYankPost * silent! lua vim.highlight.on_yank { higroup='IncSearch', timeout=1200 }
+  augroup END
+endif
+" }}}
+
+" vim: ft=vim fdm=marker
+
+" tehb vimrc:
+set relativenumber
