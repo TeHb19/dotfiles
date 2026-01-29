@@ -1,0 +1,38 @@
+[colors.bright]
+black = "#767676"
+blue = "#1a8fff"
+cyan = "#0dcdcd"
+green = "#23fd00"
+magenta = "#fd28ff"
+red = "#f2201f"
+white = "#ffffff"
+yellow = "#fffd00"
+
+[colors.normal]
+#black = "#32344a"
+black = "#000000"
+blue = "#0d73cc"
+cyan = "#14ffff"
+green = "#19cb00"
+magenta = "#cb1ed1"
+red = "#cc0403"
+white = "#dddddd"
+yellow = "#cecb00"
+
+[colors.primary]
+background = "#1a1b26"
+foreground = "#a9b1d6"
+
+[font]
+size = 14.0
+
+[font.normal]
+family = "monospace"
+#family = "Hack Nerd Font Mono"
+
+[window]
+opacity = 0.95
+
+[window.padding]
+x = 10
+y = 10
