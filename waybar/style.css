@@ -56,7 +56,7 @@ tooltip {
 #window,
 #custom-tonrate,
 #custom-wya {
-  background-color: rgba(30, 25, 50, 0);
+  background-color: rgba(30, 25, 50, 0.9);
   border: none;
 }
 
@@ -105,6 +105,16 @@ tooltip {
   color: white;
   animation-name: blink;
   animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+#battery.critical:not(.charging) {
+  background: #f38ba8;
+  color: white;
+  animation-name: blink;
+  animation-duration: 0.15s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-direction: alternate;

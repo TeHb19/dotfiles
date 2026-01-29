@@ -5,6 +5,7 @@ set nocompatible
 scriptencoding 'utf-8'
 
 colorscheme reclipse
+runtime! ftplugin/man.vim
 filetype plugin indent on
 syntax on
 let mapleader='='

@@ -6,3 +6,4 @@ folder-hook ~/Mail/school/[a-zA-Z]* source ~/.config/mutt/muttrc.1
 
 set mail_check = 60
 set mbox_type = Maildir
+

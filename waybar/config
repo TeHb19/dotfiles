@@ -6,8 +6,10 @@
 		"cpu",
 		"memory",
 		"temperature",
-		"hyprland/workspaces",
-		"hyprland/window"
+		"niri/workspaces",
+//		"hyprland/workspaces",
+		"niri/window"
+//		"hyprland/window"
 		],
 
 	"modules-center": ["clock" ],
@@ -16,7 +18,8 @@
 	"modules-right":  [
 		"custom/tonrate",
 		"custom/wya",
-		"hyprland/language",
+		"niri/language",
+//		"hyprland/language",
 		"backlight",
 		"pulseaudio",
 		"pulseaudio#mic",
@@ -25,6 +28,17 @@
 		"battery"
 		],
 
+
+	"niri/workspaces": {
+		"format": "{icon} ",
+		"on-click": "activate",
+		"all-outputs": true,
+    "format-icons": {
+      "main": "",
+      "chat": "",
+      "games": ""
+      }
+		},
 
 	"hyprland/workspaces": {
 		"format": " {icon} ",
@@ -39,7 +53,6 @@
 			}
 		},
 
-
 	"clock": {
 		"format":" {:%H:%M %a}",
 		"format-alt": "  {:%H:%M %Y.%m.%d %A}",
@@ -48,12 +61,17 @@
 		},
 
 
-	"hyprland/language": {
-		"format": " {}",
-		"format-en": "US",
-		"format-ru": "RU"
+	"niri/language": {
+		"format": "  {long}"
+    //"format-en": "US",
+    //"format-ru": "RU"
 		},
 
+	"hyprland/language": {
+		"format": "  {}",
+    "format-en": "US",
+    "format-ru": "RU"
+		},
 
 	"backlight": {
 		"tooltip": false,
@@ -67,12 +85,12 @@
 
 
 	"network": {
-		"interface": "wlan0",
+    "interface": "wlan0",
 		"format": "{ifname}",
 		"format-alt": " {icon} {essid} ",
 		"format-wifi": "{icon}",
-  "format-ethernet": "{ipaddr}/{cidr} {icon}",
-		"format-disconnected": "Offile",
+		"format-disconnected": "Offline",
+    "format-ethernet": "{ipaddr}/{cidr} {icon}",
 		"tooltip-format-wifi": "Device:\t{ifname}\nSSID:\t{essid}\nFreq:\t{frequency}GHz\nIP: {ipaddr}\nSignal: {signalStrength}% ",
 		"on-click-right": "nm-connection-editor",
 		"format-icons":{
@@ -153,7 +171,7 @@
 		"tooltip": false
 		},
 
-	"hyprland/window": {
+	"niri/window": {
     		"separate-outputs": true
 		},
 
