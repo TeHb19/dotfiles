@@ -1,0 +1,21 @@
+* My dotfiles
+*This repo contains my (or probably someone else's) dotfiles for:*
+  - alacritty
+  - waybar
+  - niri
+  - dunst
+  - wofi
+  - and more!
+
+Made for Arch Linux, a lot of things taken from [[https://github.com/vEnhance/dotfiles/][vEnhance]].
+Use at your own risk!
+
+** How to use?
+First, you should install the packages that you want to use (and ~git~) from your favorite package manager.
+Then, clone this repo:
+
+#+begin_src bash
+git clone https://github.com/TeHb19/dotfiles
+#+end_src
+
+Finally, copy (or symlink) the needed files to the appropriate locations (install.sh coming soon?).
